@@ -8,7 +8,7 @@ namespace IPv4FileSearcher
 {
     public interface IFileManager
     {
-        public void ReadFile(string path);
-        public void WriteFile(string path);
+        public string[] ReadFile(string path);
+        public void WriteFile(string path, string[] content);
     }
 }

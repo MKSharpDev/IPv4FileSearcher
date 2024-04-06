@@ -19,8 +19,6 @@ namespace IPv4FileSearcher
             this.args = args;
         }
 
-
-
         public Dictionary<string, string> MakeDataDictionary()
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
@@ -39,7 +37,7 @@ namespace IPv4FileSearcher
                     if (!settings.Contains(args[i]))
                     {
                         Console.WriteLine("Параметры заданы не верно, введите параметры в ручном режиме");
-                        data = new Dictionary<string, string>();
+                        data = MakeDictionaryManually();
                         break;
                     }
                     data.Add(args[i], args[i + 1]);
@@ -47,7 +45,7 @@ namespace IPv4FileSearcher
                 catch (Exception)
                 {
                     Console.WriteLine("Параметры заданы не верно, введите параметры в ручном режиме");
-                    data = new Dictionary<string, string>();
+                    data = MakeDictionaryManually();
                 }
             }
 
@@ -56,6 +54,18 @@ namespace IPv4FileSearcher
                 data.Remove("--address-mask ");
             }
             return data;
+        }
+
+        private Dictionary<string, string> MakeDictionaryManually()
+        {
+            Dictionary<string, string> manuallyDict = new Dictionary<string, string>();
+
+            Console.WriteLine("Введите --file-log  путь к файлу с логама");
+            string filePath = Console.ReadLine();
+            manuallyDict.Add("--file-log", filePath);   
+
+
+
         }
     }
 }
