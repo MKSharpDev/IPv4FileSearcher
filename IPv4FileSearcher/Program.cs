@@ -11,9 +11,9 @@ internal class Program
         FileManager fileManager = new FileManager();
         var innDict = dataReceiver.MakeDataDictionary();
         Options options = new Options(innDict, fileManager);    
-        IPv4Searcher ipv4Searcher = new IPv4Searcher(dataReceiver, fileManager);
+        IPv4Searcher ipv4Searcher = new IPv4Searcher(options, fileManager);
 
-        IPv4Searcher.Search;
+        ipv4Searcher.Search();
 
         Console.ReadKey();
 

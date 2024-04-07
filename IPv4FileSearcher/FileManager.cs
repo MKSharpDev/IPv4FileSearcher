@@ -10,16 +10,51 @@ namespace IPv4FileSearcher
     {
         public string[] ReadFile(string path)
         {
-            string[] content = null;
+            List<string> content = new List<string>();
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    string? line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        content.Add(line);
+                    }
+                }
+
+                return content.ToArray();
 
 
+            }
+            catch (Exception ex)
+            {
 
-            return content;
+                Console.WriteLine("Ошибка чтения файла");
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            return null;
         }
 
         public void WriteFile(string path, string[] content)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(path, true))
+
+                    foreach (string line in content)
+                    {
+                        writer.WriteLine(line);
+                    }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Ошибка записи в файл");
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,11 +49,23 @@ namespace IPv4FileSearcher
                         data = MakeDictionaryManually();
                         break;
                     }
+                    if (true)
+                    {
+
+                    }
                     data.Add(args[i], args[i + 1]);
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("Параметры заданы не верно, введите параметры в ручном режиме");
+                    data = MakeDictionaryManually();
+                }
+            }
+            if (data.ContainsKey("--address-mask"))
+            {
+                if (!IsValidMask(data["--address-mask"]))
+                {
+                    Console.WriteLine("Введена не валидная маска. Введите параметры в ручном режиме");
                     data = MakeDictionaryManually();
                 }
             }
@@ -62,6 +75,8 @@ namespace IPv4FileSearcher
             {
                 data.Remove("--address-mask ");
             }
+
+
             return data;
         }
 
@@ -83,6 +98,14 @@ namespace IPv4FileSearcher
                     }
                 }
             }
+            if (manuallyDict.ContainsKey("--address-mask"))
+            {
+                if (!IsValidMask(manuallyDict["--address-mask"]))
+                {
+                    Console.WriteLine("Введена не валидная маска. Введите параметры в ручном режиме");
+                    manuallyDict = MakeDictionaryManually();
+                }
+            }
             return manuallyDict;
         }
 
@@ -92,6 +115,24 @@ namespace IPv4FileSearcher
             Console.WriteLine($"Введите {temp} {description}");
             string value = Console.ReadLine();
             manuallyDict.Add(temp, value);
+        }
+
+        //Проверяем валидность маски подсети
+        static bool IsValidMask(string mask)
+        {           
+            if (!IPAddress.TryParse(mask, out var addr))
+                return false;
+            var byteVal = addr.GetAddressBytes();
+            if (byteVal.Length != 4)
+                return false;
+            var intVal = BitConverter.ToInt32(byteVal);
+            intVal = IPAddress.NetworkToHostOrder(intVal);
+
+            var uintVal = (uint)intVal ^ uint.MaxValue;
+            var addOne = uintVal + 1;
+            var ret = addOne & uintVal;
+
+            return ret == 0;
         }
     }
 }
