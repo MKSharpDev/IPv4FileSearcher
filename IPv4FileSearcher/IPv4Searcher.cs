@@ -35,7 +35,7 @@ namespace IPv4FileSearcher
             }
 
             //Задаем сеть
-            IPNetwork ipnetwork = new IPNetwork();
+            IPNetwork ipnetwork = new IPNetwork(IPAddress.Parse("0.0.0.0"), 0);
             try
             {
                 ipnetwork = new IPNetwork(addressStart, cidr);
