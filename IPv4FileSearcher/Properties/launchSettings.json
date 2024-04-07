@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IPv4FileSearcher": {
+      "commandName": "Project",
+      "commandLineArgs": "--file-log D:\\reposTest\\TestIP\\Ips.txt --file-output D:\\reposTest\\TestIP\\output.txt --address-start 101.234.144.10 --address-mask 255.255.255.128 --time-start 15.08.2000 --time-end 10.01.2024"
+    }
+  }
+}

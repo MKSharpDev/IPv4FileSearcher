@@ -35,7 +35,22 @@ namespace IPv4FileSearcher
             }
 
             //Задаем сеть
-            IPNetwork ipnetwork = new IPNetwork(addressStart, cidr);
+            IPNetwork ipnetwork = new IPNetwork();
+            try
+            {
+                ipnetwork = new IPNetwork(addressStart, cidr);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка задания нижней границы диапазона ip, установлена нижняя граница 0");
+
+                Console.WriteLine(ex.ToString());
+                var editAdres = addressStart.GetAddressBytes();
+                editAdres[3] = 0;
+                IPAddress exAdres = new IPAddress(editAdres);
+                ipnetwork = new IPNetwork(exAdres, cidr);
+            }
 
 
             //Проверяем и задаем стартовое время
@@ -49,7 +64,7 @@ namespace IPv4FileSearcher
             DateTime dateEnd = DateTime.MaxValue;
             if (options.TimeEnd != null)
             {
-                dateEnd = DateTime.Parse(options.TimeStart);
+                dateEnd = DateTime.Parse(options.TimeEnd);
             }
 
 
@@ -57,16 +72,17 @@ namespace IPv4FileSearcher
 
             foreach (string item in ipAdressesIn) 
             {
-                var items = item.Split(' ').ToList();
-
+                var splitItem = item.Split(':').ToList();
                 try
                 {
-                    var ipRequestTime = DateTime.Parse(items[1]);
-                    if (dateStart >= ipRequestTime && ipRequestTime <= dateEnd)
+                    string date = $"{splitItem[1]}:{splitItem[2]}:{splitItem[3]}";
+
+                    var ipRequestTime = DateTime.Parse(date);
+                    if (ipRequestTime >= dateStart && ipRequestTime <= dateEnd)
                     {
 
 
-                        var adress = IPAddress.Parse(item[0].ToString());
+                        var adress = IPAddress.Parse(splitItem[0].ToString());
                         
 
                         if (ipnetwork.Contains(adress))
@@ -90,7 +106,6 @@ namespace IPv4FileSearcher
  
             }
 
-            bool isPartOfTheSubnet = ipnetwork);
 
             
             List<string> rezList = new List<string>();

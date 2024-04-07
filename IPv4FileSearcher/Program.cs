@@ -15,8 +15,6 @@ internal class Program
 
         ipv4Searcher.Search();
 
-        Console.ReadKey();
-
     }
 
     // Каждый класс имеет строго одну зону ответственности
